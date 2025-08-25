@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Intro Animada</title>
   <style>
     body {
@@ -224,6 +224,25 @@
 
 .square a:hover {
   background: orange;
+}
+
+/* 📱 Ajustes para pantallas pequeñas (celulares) */
+@media (max-width: 768px) {
+  .square {
+    width: 90% !important;   /* ocupa casi toda la pantalla */
+    height: 70% !important;  /* más alto en celulares */
+    font-size: 12px;         /* texto más pequeño */
+    padding: 10px;
+  }
+
+  .square h2 {
+    font-size: 16px;
+  }
+
+  .title {
+    font-size: 1.2em; /* título más pequeño en celular */
+    top: 30%;
+  }
 }
 
   </style>
