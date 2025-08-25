@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Intro Animada</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: black;
+      overflow: hidden;
+    }
+
+    .container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Reloj */
+    .clock {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 150px;
+      height: 150px;
+      background: white;
+      border-radius: 50%;
+      border: 6px solid black;
+      transform: translate(-50%, -50%) rotate(0deg);
+      animation: spin 4s linear infinite, fall 3s ease-in forwards 3s;
+      z-index: 3;
+    }
+
+    /* Aguja */
+    .hand {
+      position: absolute;
+      width: 4px;
+      height: 60px;
+      background: black;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%) rotate(0deg);
+      transform-origin: bottom;
+      animation: tick 2s linear infinite;
+    }
+
+    /* Mancha amarilla */
+    .splash {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: yellow;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      animation: splash 1s ease-out forwards;
+      animation-delay: 4s; /* justo después de la caída */
+      z-index: 2;
+    }
+
+    /* Fondo amarillo -> se colapsa a negro */
+    .yellow-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: yellow;
+      opacity: 0;
+      animation: showBg 0.5s ease-in forwards 5s, collapse-bg 1.5s ease-in forwards 12s;
+      z-index: 1;
+    }
+
+    /* Línea + texto */
+    .line {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 6px;
+      background: black;
+      transform: translate(-50%, -50%);
+      animation: lineGrow 2s ease-out forwards 7s, lineVanish 1s forwards 11s;
+      z-index: 3;
+    }
+
+    .title {
+      position: absolute;
+      top: 38%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2em;
+      color: black;
+      opacity: 0;
+      animation: showText 2s ease-out forwards 8s, hideText 1s forwards 11s;
+      z-index: 3;
+    }
+
+/* Nuevo cuadro */
+.square {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 3px solid white;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  color: white;
+  padding: 20px;
+  background: rgba(0,0,0,0.6); /* fondo semi-transparente */
+  animation: drawSquare 3s ease-out forwards 14s;
+  z-index: 3;
+  overflow-y: auto; /* 👈 permite hacer scroll vertical */
+  font-family: Arial, sans-serif;
+  text-align: justify; /* 👈 justifica el texto */
+}
+
+
+    /* Animaciones */
+    @keyframes spin {
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    @keyframes tick {
+      100% { transform: translateX(-50%) rotate(360deg); }
+    }
+
+    @keyframes fall {
+      100% { top: 120%; opacity: 0; }
+    }
+
+    @keyframes splash {
+      to {
+        width: 3000px;
+        height: 3000px;
+        opacity: 0; /* 👈 se desvanece cuando termina */
+      }
+    }
+
+    @keyframes showBg {
+      to { opacity: 1; }
+    }
+
+    @keyframes collapse-bg {
+      to { background: black; opacity: 1; }
+    }
+
+    @keyframes lineGrow {
+      to { width: 60%; }
+    }
+
+    @keyframes lineVanish {
+      to { opacity: 0; }
+    }
+
+    @keyframes showText {
+      to { opacity: 1; }
+    }
+
+    @keyframes hideText {
+      to { opacity: 0; }
+    }
+
+/* Animación */
+@keyframes drawSquare {
+  0%   { width: 0; height: -10; opacity: 1; }
+  50%  { width: 600px; height: 400; opacity: 1; }
+  100% { width: 900px; height: 500px; opacity: 1; }
+}
+
+/* Mantener el título centrado */
+.square h2 {
+  font-size: 20px;
+  margin: 10px 0;
+  text-align: center; /* 👈 centrado solo para el título */
+}
+
+/* Personalizar scroll dentro del cuadro */
+.square::-webkit-scrollbar {
+  width: 6px;              /* grosor del scroll */
+}
+
+.square::-webkit-scrollbar-track {
+  background: transparent; /* fondo invisible */
+}
+
+.square::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.3); /* color semitransparente */
+  border-radius: 4px;
+}
+
+.square::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.5); /* más visible al pasar el mouse */
+}
+
+/* Para Firefox */
+.square {
+  scrollbar-width: thin;                /* scroll delgado */
+  scrollbar-color: rgba(255,255,255,0.3) transparent;
+}
+
+.square p {
+  font-size: 14px;
+  margin: 8px 0;
+}
+
+.square a {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: yellow;
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+.square a:hover {
+  background: orange;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="clock">
+      <div class="hand"></div>
+    </div>
+    <div class="splash"></div>
+    <div class="yellow-bg"></div>
+    <div class="line"></div>
+    <div class="title">Crónica de una muerte anunciada</div>
+    <div class="square">
+<h2>Crónica de una muerte anunciada</h2>
+<p><strong>Autor:</strong> Gabriel García Márquez</p>
+<p><strong>Resumen:</strong> La novela narra el asesinato de Santiago Nasar en un pequeño pueblo caribeño, donde todos saben lo que va a ocurrir excepto él. La obra refleja la fatalidad, la honra y la responsabilidad colectiva.</p>
+
+<p><strong>Personajes principales:</strong></p>
+<ul>
+  <li>Santiago Nasar: víctima del asesinato anunciado.</li>
+  <li>Ángela Vicario: mujer cuya honra deshonrada desata los hechos.</li>
+  <li>Los hermanos Vicario: ejecutores de la venganza.</li>
+  <li>Bayardo San Román: esposo de Ángela.</li>
+  <li>El narrador: amigo de la víctima, reconstruye los hechos.</li>
+</ul>
+
+<p><strong>Temas centrales:</strong></p>
+<ul>
+  <li>El destino y la fatalidad.</li>
+  <li>El honor y las costumbres sociales.</li>
+  <li>La responsabilidad colectiva.</li>
+  <li>La memoria y la narración.</li>
+</ul>
+
+<p><strong>Frases memorables:</strong></p>
+<p>"El día en que lo iban a matar, Santiago Nasar se levantó a las 5.30 de la mañana..."</p>
+<p>"Nunca hubo una muerte más anunciada."</p>
+
+<p><strong>Detalles adicionales:</strong></p>
+<p>La historia se inspira en un hecho real ocurrido en 1951 en Sucre, Colombia. El estilo narrativo combina periodismo con literatura, lo que le da un aire único de crónica investigativa.</p>
+
+<p><strong>Impacto cultural:</strong></p>
+<p>La obra es leída en colegios y universidades como ejemplo de realismo mágico y de estructura narrativa no lineal. Ha sido adaptada al cine y al teatro en múltiples países.</p>
+
+<p><strong>Estilo narrativo:</strong></p>
+<p>Gabriel García Márquez utiliza una narración fragmentada, con múltiples voces y puntos de vista, logrando que la historia se sienta inevitable, aunque desde el inicio ya se conozca el final.</p>
+
+<p><strong>Recepción crítica:</strong></p>
+<p>Desde su publicación en 1981, la novela ha sido aclamada por la crítica y considerada una de las obras más importantes del autor.</p>
+
+<p><strong>Ediciones y traducciones:</strong></p>
+<p>Ha sido traducida a más de 30 idiomas y cuenta con cientos de ediciones en todo el mundo.</p>
+
+<p><strong>Más información:</strong></p>
+<p>Existen múltiples ensayos académicos sobre la obra, que exploran su relación con la cultura caribeña, el machismo, la religión y la identidad latinoamericana.</p>
+
+<a href="https://unisinucartagena.edu.co/wp-content/uploads/2020/07/Cronica_de_una_Muerte_Anunciada-Gabriel_Garcia_Marquez.pdf" target="_blank">Comprar aquí</a>
+
+</div>
+  </div>
+</body>
+</html>
